@@ -73,6 +73,9 @@ sudo yaourt -S --noconfirm wps-office
 yaourt -S --noconfirm reflector-timer-weekly
 sudo systemctl enable reflector.timer
 
+# Set favorite apps in Activities
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'firefox.desktop', 'sublime_text_3.desktop', 'google-chrome.desktop', 'gnome-system-monitor.desktop']"
+
 # Dropbox
 yaourt -S --noconfirm dropbox
 
