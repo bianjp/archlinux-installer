@@ -105,6 +105,16 @@ sudo pacman -S --noconfirm ruby
 sudo pacman -S --noconfirm redis
 sudo systemctl enable redis
 
+# SSH config
+grep '^Host' /etc/ssh/ssh_config &> /dev/null || sudo tee -a /etc/ssh/ssh_config <<EOF
+Host *
+    ServerAliveCountMax 5
+    ServerAliveInterval 10
+EOF
+
+# Dotfiles
+find dotfiles -type f -exec cp {} ~/ \;
+
 read -r -p "Delete /archlinux-installer folder? [y/N]" confirm
 if [[ "$confirm" =~ ^(y|Y) ]]; then
   sudo rm -rf /archlinux-installer

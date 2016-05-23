@@ -1,0 +1,54 @@
+[user]
+  name = Your Name
+  email = Your Email
+
+[core]
+  editor = vim
+  quotepath = false
+
+[color]
+  ui = auto
+
+[push]
+  default = simple
+
+[rebase]
+  autostash = true
+
+[alias]
+  st = status
+  ad = add
+  ck = checkout
+  ckb = checkout -b
+  ci = commit
+  cim = commit -m
+  cia = commit --amend
+  df = diff
+  dfc = diff --cached
+  br = branch
+  bra = branch -a
+  ft = fetch
+  ftu = fetch upstream
+  ignored = !git ls-files -v | grep "^[[:lower:]]"
+  pl = pull
+  mg = merge
+  mgu = merge upstream/master
+  rb = rebase
+  rbc = rebase --continue
+  rbi = rebase --interactive
+  rba = rebase --abort
+  ps = push
+  psf = push --force
+  psu = "!git push -u origin `git symbolic-ref --short HEAD` $@"
+  ss = stash
+  ssa = stash apply
+  lg = log
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  rs = reset
+  rh = reset HEAD
+  rhl = reset HEAD^
+  r = remote
+  rv = remote -v
+  ra = remote add
+  rr = remote remove
+  rs = remote set-url
