@@ -1,6 +1,6 @@
 #!/usr/bin/bash
-# exit when any command fails
-set -e
+# print command before executing, and exit when any command fails
+set -xe
 
 echo "This script should be run under Gnome Desktop Environment."
 read -r -p "Are you sure to continue? [Y/n]" confirm
@@ -75,9 +75,6 @@ sudo systemctl enable reflector.timer
 
 # Set favorite apps in Activities
 gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'firefox.desktop', 'sublime_text_3.desktop', 'google-chrome.desktop', 'gnome-system-monitor.desktop']"
-
-# Dropbox
-yaourt -S --noconfirm dropbox
 
 # Developer softwares
 # Nginx

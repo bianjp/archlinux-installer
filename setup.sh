@@ -1,6 +1,6 @@
 #!/usr/bin/bash
-# exit when any command fails
-set -e
+# print command before executing, and exit when any command fails
+set -xe
 
 hostname=arch
 # regular user name
@@ -106,7 +106,7 @@ fi
 
 # gnome
 # install mininal packages from gnome group
-pacman -S --noconfirm gnome-shell gnome-keyring gdm eog evince gnome-backgrounds gnome-font-viewer gnome-screenshot gnome-shell-extensions gnome-system-monitor gnome-terminal nautilus gvfs-mtp xdg-user-dirs-gtk
+pacman -S --noconfirm gnome-shell gnome-keyring gdm eog evince gnome-backgrounds gnome-control-center gnome-font-viewer gnome-screenshot gnome-shell-extensions gnome-system-monitor gnome-terminal nautilus gvfs-mtp xdg-user-dirs-gtk
 
 # some packages from gnome-extra group
 pacman -S --noconfirm unrar p7zip file-roller gnome-tweak-tool

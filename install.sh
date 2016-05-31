@@ -1,6 +1,6 @@
 #!/usr/bin/bash
-# exit when any command fails
-set -e
+# print command before executing, and exit when any command fails
+set -xe
 
 read -r -p "Have you already partitioned your disk, built filesystem, and mounted to /mnt correctly? [y/N]" confirm
 if [[ ! "$confirm" =~ ^(y|Y) ]]; then
