@@ -77,10 +77,10 @@ pacman -S --noconfirm archlinuxcn-keyring
 # xorg
 pacman -S --noconfirm xorg-server xorg-server-utils
 
-# video driver
-nvidia=`lspci | grep -e VGA -e 3D | grep 'NVIDIA'`
-amd=`lspci | grep -e VGA -e 3D | grep 'AMD'`
-intel=`lspci | grep -e VGA -e 3D | grep 'Intel'`
+# graphics driver
+nvidia=`(lspci | grep -e VGA -e 3D | grep 'NVIDIA' &> /dev/null) && echo 'yes' || echo ''`
+amd=`(lspci | grep -e VGA -e 3D | grep 'AMD' &> /dev/null) && echo 'yes' || echo ''`
+intel=`(lspci | grep -e VGA -e 3D | grep 'Intel' &> /dev/null) && echo 'yes' || echo ''`
 if [[ -n "$nvidia" ]]; then
   pacman -S --noconfirm nvidia
 fi
