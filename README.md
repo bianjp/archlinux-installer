@@ -2,7 +2,9 @@
 
 Shell scripts that save you time of installing and setting up [Arch Linux](https://www.archlinux.org/).
 
-__Currently it's for my personal use, and feature requests will probably not be responded.__
+## Disclaimer
+
+These scripts are not fully tested. Play at your own risk.
 
 ## Features
 
