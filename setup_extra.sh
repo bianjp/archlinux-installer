@@ -41,6 +41,12 @@ cat <<EOF > ~/.config/gtk-3.0/settings.ini
 gtk-application-prefer-dark-theme=1
 EOF
 
+# automatic date and time
+sudo systemctl enable systemd-timesyncd.service
+# automatic timezone
+gsettings set org.gnome.desktop.datetime automatic-timezone true
+gsettings set org.gnome.desktop.interface clock-format '24h'
+
 # Fcitx input method
 sudo pacman -S --noconfirm fcitx-im fcitx-configtool
 yaourt -S --noconfirm fcitx-sogoupinyin
