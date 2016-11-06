@@ -10,7 +10,6 @@ alias lla='ls -Al --color=auto'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias tree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias less='less -R'
 alias ps?='ps aux | grep'
 alias pacman?='pacman -Q | grep'
@@ -24,6 +23,7 @@ alias srr='screen -r'
 alias pc='proxychains'
 alias b='bundle exec'
 alias db='mysql -uroot -proot'
+pgdb(){ psql -d ${1:-postgres}; }
 alias weather='curl wttr.in'
 
 # Avoid garbled characters when unzip files ziped on Windows. Depend on package unzip-iconv
@@ -117,8 +117,9 @@ ipinfo(){
 
       i=$((i + 1))
       # there is a an rate limit for the api access
+      # https://www.ipip.net/download.html
       if [[ "$i" < "$count" ]]; then
-        sleep 1
+        sleep 0.3
       fi
 
       echo "$ip  $info"

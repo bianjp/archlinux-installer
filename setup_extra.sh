@@ -94,6 +94,13 @@ sudo systemctl enable mysqld
 sudo systemctl start mysqld
 sudo mysql_secure_installation
 
+# PostgreSQL
+sudo pacman -S postgresql
+sudo -i -u postgres initdb --locale $LANG -E UTF8 -D '/var/lib/postgres/data'
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+sudo -i -u postgres createuser $USER --no-password --superuser
+
 # PHP
 sudo pacman -S --noconfirm php php-fpm php-gd
 sudo systemctl enable php-fpm
