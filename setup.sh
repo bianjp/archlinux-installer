@@ -105,15 +105,17 @@ if [[ -n "`grep 'Synaptics TouchPad' /proc/bus/input/devices`" ]]; then
 fi
 
 # gnome
-# install mininal packages from gnome group
-pacman -S --noconfirm gnome-shell gnome-keyring gdm eog evince gnome-backgrounds gnome-control-center gnome-font-viewer gnome-screenshot gnome-shell-extensions gnome-system-monitor gnome-terminal nautilus gvfs-mtp xdg-user-dirs-gtk
-
-# some packages from gnome-extra group
-pacman -S --noconfirm unrar p7zip file-roller gnome-tweak-tool
+pacman -S --noconfirm gdm gnome-shell gnome-shell-extensions gnome-keyring gnome-backgrounds \
+  gnome-control-center gnome-font-viewer gnome-screenshot xdg-user-dirs-gtk \
+  gnome-power-manager gnome-system-monitor gnome-terminal nautilus gvfs-mtp eog evince \
+  file-roller gnome-tweak-tool networkmanager
 
 # start gnome by default
 systemctl enable gdm
 systemctl enable NetworkManager
+
+# compression/decompression tools
+pacman -S --noconfirm unrar p7zip
 
 # useful shell utils
 pacman -S --noconfirm bash-completion vim bind-tools dos2unix wget git openssh imagemagick
