@@ -15,21 +15,34 @@
 [rebase]
   autostash = true
 
+[merge]
+  ff = only
+
 [alias]
   st = status
   ad = add
+  assume-unchanged = update-index --assume-unchanged
+  no-assume-unchanged = update-index --no-assume-unchanged
+  ignored = !git ls-files -v | grep "^[a-z]"
+  cl = clone
   ck = checkout
-  ckb = checkout -b
+  ckb = checkout --no-track -b
   ci = commit
   cim = commit -m
-  cia = commit --amend
+  cia = commit --amend --reset-author
+  cp = cherry-pick
+  cpa = cherry-pick --abort
+  cpc = cherry-pick --continue
+  cls = clean -df
   df = diff
   dfc = diff --cached
   br = branch
   bra = branch -a
-  ft = fetch
+  brm = branch --move
+  brd = branch -d
+  brdf = branch -D
+  ft = fetch -p
   ftu = fetch upstream
-  ignored = !git ls-files -v | grep "^[[:lower:]]"
   pl = pull
   mg = merge
   mgu = merge upstream/master
@@ -40,13 +53,18 @@
   ps = push
   psf = push --force
   psu = "!git push -u origin `git symbolic-ref --short HEAD` $@"
+  psd = push origin --delete
   ss = stash
   ssa = stash apply
+  ssp = stash pop
+  ssl = stash list
+  ssc = stash clear
   lg = log
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
   rs = reset
   rh = reset HEAD
   rhl = reset HEAD^
+  rollback = "!f(){ if [[ -z \"$1\" || ${#1} -lt 6 ]]; then git reset --hard HEAD~${1:-1}; else git reset --hard $1; fi; }; f"
   r = remote
   rv = remote -v
   ra = remote add

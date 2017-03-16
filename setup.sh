@@ -40,13 +40,13 @@ EOF
   sed -i 's#^ \+##g' /boot/loader/loader.conf
 
   # modify root partion in loader conf
-  root_partition=`mount  | grep 'on / ' | cut -d' ' -f1`
-  root_partition=`df / | tail -1 | cut -d' ' -f1`
+  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  root_partition=$(df / | tail -1 | cut -d' ' -f1)
   sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
 else
-  disk=`df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g'`
+  disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
   pacman --noconfirm -S grub os-prober
-  grub-install --target=i386-pc $disk
+  grub-install --target=i386-pc "$disk"
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
@@ -78,9 +78,9 @@ pacman -S --noconfirm archlinuxcn-keyring
 pacman -S --noconfirm xorg-server xorg-server-utils
 
 # graphics driver
-nvidia=`(lspci | grep -e VGA -e 3D | grep 'NVIDIA' &> /dev/null) && echo 'yes' || echo ''`
-amd=`(lspci | grep -e VGA -e 3D | grep 'AMD' &> /dev/null) && echo 'yes' || echo ''`
-intel=`(lspci | grep -e VGA -e 3D | grep 'Intel' &> /dev/null) && echo 'yes' || echo ''`
+nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null)
+amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null)
+intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null)
 if [[ -n "$nvidia" ]]; then
   pacman -S --noconfirm nvidia
 fi
@@ -100,7 +100,7 @@ if [[ -n "$nvidia" && -n "$intel" ]]; then
 fi
 
 # touchpad driver
-if [[ -n "`grep 'Synaptics TouchPad' /proc/bus/input/devices`" ]]; then
+if grep -q 'Synaptics TouchPad' /proc/bus/input/devices; then
   pacman -S --noconfirm xf86-input-synaptics
 fi
 

@@ -10,6 +10,9 @@ fi
 
 sudo pacman -Syy
 
+# Dotfiles
+find dotfiles -type f -exec cp {} ~/ \;
+
 # yaourt. Provided by archlinuxcn repo
 sudo pacman -S --noconfirm yaourt
 # don't bother to prompt whether to edit PKGBUILD when installing aur package
@@ -96,10 +99,10 @@ sudo mysql_secure_installation
 
 # PostgreSQL
 sudo pacman -S postgresql
-sudo -i -u postgres initdb --locale $LANG -E UTF8 -D '/var/lib/postgres/data'
+sudo -i -u postgres initdb --locale "$LANG" -E UTF8 -D '/var/lib/postgres/data'
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
-sudo -i -u postgres createuser $USER --no-password --superuser
+sudo -i -u postgres createuser "$USER" --no-password --superuser
 
 # PHP
 sudo pacman -S --noconfirm php php-fpm php-gd
@@ -110,6 +113,9 @@ sudo pacman -S --noconfirm nodejs npm
 
 # Ruby
 sudo pacman -S --noconfirm ruby
+source ~/.bash_profile
+gem install bundler
+bundle config mirror.https://rubygems.org https://gems.ruby-china.org
 
 # Redis
 sudo pacman -S --noconfirm redis
@@ -121,9 +127,6 @@ Host *
     ServerAliveCountMax 5
     ServerAliveInterval 10
 EOF
-
-# Dotfiles
-find dotfiles -type f -exec cp {} ~/ \;
 
 read -r -p "Delete /archlinux-installer folder? [y/N]" confirm
 if [[ "$confirm" =~ ^(y|Y) ]]; then
