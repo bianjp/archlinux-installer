@@ -35,7 +35,7 @@ yaourt -S --noconfirm google-chrome
 sudo pacman -S --noconfirm gnome-mplayer
 
 # Gnome theme
-yaourt -S --noconfirm numix-themes numix-circle-icon-theme-git
+yaourt -S --noconfirm numix-gtk-theme numix-circle-icon-theme-git
 gsettings set org.gnome.desktop.interface gtk-theme 'Numix'
 gsettings set org.gnome.desktop.interface icon-theme 'Numix-Circle-Light'
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'

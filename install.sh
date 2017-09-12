@@ -29,7 +29,7 @@ pacstrap -i /mnt base base-devel --noconfirm
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 # Setup new system
-mkdir /mnt/archlinux-installer
+rm -rf /mnt/archlinux-installer && mkdir /mnt/archlinux-installer
 cp -r ./* /mnt/archlinux-installer/
 arch-chroot /mnt /archlinux-installer/setup.sh
 

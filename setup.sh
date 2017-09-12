@@ -15,6 +15,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Timezone
+rm -f /etc/localtime
 ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock --systohc --utc
 
@@ -78,9 +79,9 @@ pacman -S --noconfirm archlinuxcn-keyring
 pacman -S --noconfirm xorg-server xorg-server-utils
 
 # graphics driver
-nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null)
-amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null)
-intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null)
+nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
+amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
+intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
 if [[ -n "$nvidia" ]]; then
   pacman -S --noconfirm nvidia
 fi
@@ -118,4 +119,4 @@ systemctl enable NetworkManager
 pacman -S --noconfirm unrar p7zip
 
 # useful shell utils
-pacman -S --noconfirm bash-completion vim bind-tools dos2unix wget git openssh imagemagick
+pacman -S --noconfirm bash-completion vim bind-tools dos2unix wget git openssh imagemagick tree
