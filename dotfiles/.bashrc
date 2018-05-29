@@ -14,30 +14,34 @@ alias ....='cd ../../..'
 alias less='less -R'
 alias 'ps?'='ps aux | grep -v grep | grep'
 alias besttrace='besttrace -q 1'
-alias u='yaourt -Syua'
+alias u='yay -Syu'
+alias uy='yay -Syyu'
+alias mksrcinfo='makepkg --printsrcinfo > .SRCINFO'
 alias 'pacman?'='pacman -Q | grep'
 alias 'yum?'='yum list installed | grep'
 alias 'apt?'='dpkg -l | grep'
 alias 'history?'='history | grep'
+alias dps='docker ps -a --format "table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}"'
 
 alias sr='screen'
 alias srs='screen -S'
 alias srl='screen -ls'
 alias srr='screen -r'
 
-alias b='bundle exec'
-alias sb='RAILS_ENV=staging bundle exec'
-alias pb='RAILS_ENV=production bundle exec'
-alias bi='bundle install'
-alias bo='bundle outdated'
-alias bu='bundle update'
-alias br='bundle exec rake'
-alias brc='bundle exec rubocop'
-alias bc='bundle exec cap'
-alias bcs='bundle exec cap staging'
-alias bcsd='bundle exec cap staging deploy'
-alias bcp='bundle exec cap production'
-alias bcpd='bundle exec cap production deploy'
+#alias b='bundle exec'
+#alias sb='RAILS_ENV=staging bundle exec'
+#alias pb='RAILS_ENV=production bundle exec'
+#alias tb='RAILS_ENV=test bundle exec'
+#alias bi='bundle install'
+#alias bo='bundle outdated'
+#alias bu='bundle update'
+#alias br='bundle exec rake'
+#alias brc='bundle exec rubocop'
+#alias bc='bundle exec cap'
+#alias bcs='bundle exec cap staging'
+#alias bcsd='bundle exec cap staging deploy'
+#alias bcp='bundle exec cap production'
+#alias bcpd='bundle exec cap production deploy'
 
 alias weather='curl wttr.in'
 
@@ -49,6 +53,17 @@ export ZIPINFO="-O gb18030"
 export HISTIGNORE='history*'
 export EDITOR=vim
 export PS1="\[$(tput sgr0)\][\[$(tput setaf 2)\]\u\[$(tput sgr0)\]@\[$(tput setaf 5)\]\h \[$(tput sgr0)\]\[$(tput setaf 6)\]\W\[$(tput sgr0)\]] \[$(tput sgr0)\]"
+
+export GPG_TTY=$(tty)
+
+# Human readable file size
+fs() {
+  if [ -z "$1" -o ! -f "$1" ]; then
+    echo >&2 "No such file: '$1'" && false
+  else
+    stat -c '%s' "$1" | numfmt --format='%.2f' --to=iec
+  fi
+}
 
 backup(){
   if [[ -d "$1" ]]; then
@@ -86,7 +101,10 @@ extract(){
 #   one or more ip/domain name seperated by space: show location of each ip address
 ipinfo(){
   if [[ -z "$*" ]]; then
-    curl -Ss http://myip.ipip.net | sed 's#当前 IP：##' | sed 's#来自于：##' | sed 's#\t\+# #g'
+    curl -SsL http://api.ip.la/cn?text | sed -e 's#\t# #g' -e 's#[0-9. ]*$##' && echo
+    # curl -Ss https://myip.ipip.net | sed -r \
+    #   -e 's#当前 IP：([0-9.]+)\s+来自于：(.+)#\1 \2#' \
+    #   -e 's#\s+# #g'
     return
   fi
 
@@ -97,15 +115,15 @@ ipinfo(){
       ips="$ips $ip"
     # Domain
     else
-      new_ips=$(host "$ip" | grep 'has address' | cut -d' ' -f4)
+      new_ips=$(host -t A "$ip" | grep 'has address' | cut -d' ' -f4)
       ips="$ips $new_ips"
     fi
   done
 
-  count=$(echo "$ips" | gawk 'END{print NF}')
+  count=$(echo "$ips" | wc -w)
   i=0
   for ip in $ips; do
-    info=$(curl -Ss http://freeapi.ipip.net/"$ip" |
+    info=$(curl -Ss https://freeapi.ipip.net/"$ip" |
            sed -r \
                -e 's#(\[|]|")##g' \
                -e 's#[,]{2,}#,#g' \
@@ -114,9 +132,9 @@ ipinfo(){
          )
 
     i=$((i + 1))
-    # there is a an rate limit for the api access
     # https://www.ipip.net/download.html
-    if [[ "$i" < "$count" ]]; then
+    # Rate limit: 5 req/s
+    if [[ "$i" -lt "$count" ]]; then
       sleep 1
     fi
 
@@ -131,7 +149,7 @@ fullpath(){
 
 # show listening port
 port(){
-  sudo ss -tulpn | gawk '{printf "%-6s %-9s %-19s %s\n", $1, $2, $5, $7}'
+  sudo ss -tulpn | awk '{printf "%-6s %-9s %-19s %s\n", $1, $2, $5, $7}'
 }
 
 hex2rgb(){
@@ -148,10 +166,26 @@ hex2rgb(){
   fi
 }
 
+rgb2hex() {
+  rgb=$(echo $* | sed -r \
+                      -e 's#^\s*##' \
+                      -e 's#\s*$##' \
+                      -e 's#rgba?##' \
+                      -e 's#\(|\)##g' \
+                      -e 's#,# #g' \
+                      -e 's#\s+# #g' \
+  )
+  count=$(echo $rgb | wc -w)
+  if [[ "$count" -lt "3" || "$count" -gt "4" ]]; then
+    echo "Invalid RGB color"
+  else
+    rgb=$(echo $rgb | cut -d' ' -f-3)
+    printf '#%02x%02x%02x\n' $rgb
+  fi
+}
+
 random_password(){
   length=${1:-10}
   which openssl &> /dev/null && (openssl rand -base64 "$length" | head -c "$length") && echo
-  < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-$length}" && echo
+  tr -dc _A-Z-a-z-0-9 < /dev/urandom | head -c"${1:-$length}" && echo
 }
-
-[[ -f "$HOME/.bashrc_extra" ]] && source "$HOME/.bashrc_extra"
