@@ -2,6 +2,9 @@
 # print command before executing, and exit when any command fails
 set -xe
 
+# Update the system clock
+timedatectl set-ntp true
+
 read -r -p "Have you already partitioned your disk, built filesystem, and mounted to /mnt correctly? [y/N]" confirm
 if [[ ! "$confirm" =~ ^(y|Y) ]]; then
   exit
@@ -23,10 +26,10 @@ done
 pacman -Syy
 
 # Install the base packages
-pacstrap -i /mnt base base-devel --noconfirm
+pacstrap /mnt base base-devel
 
 # Generate fstab
-genfstab -U -p /mnt >> /mnt/etc/fstab
+genfstab /mnt >> /mnt/etc/fstab
 
 # Setup new system
 rm -rf /mnt/archlinux-installer && mkdir /mnt/archlinux-installer

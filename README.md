@@ -19,8 +19,8 @@ In fact, it is just a collection of commands which I'll run when installing Arch
 
 To use these scripts, you must have:
 
-* Booted an installation medium. (See [Beginners' Guide](https://wiki.archlinux.org/index.php/Beginners'_guide#Boot_the_installation_medium) for help)
-* Prepared your storage devices (See [Beginners' Guide](https://wiki.archlinux.org/index.php/Beginners'_guide#Prepare_the_storage_devices) for help)
+* Booted an installation medium. (See [Getting and installing Arch](https://wiki.archlinux.org/index.php/Category:Getting_and_installing_Arch) for help)
+* Prepared your storage devices (See [Partition the disks](https://wiki.archlinux.org/index.php/Installation_guide#Partition_the_disks) for help)
 
 Of course, you should also make these scripts available in your installing process. You can use any way you like, for example:
 
