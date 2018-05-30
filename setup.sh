@@ -107,10 +107,13 @@ fi
 # fi
 
 # gnome
-pacman -S --noconfirm gdm gnome-shell gnome-shell-extensions gnome-keyring gnome-backgrounds \
+pacman -S --noconfirm gdm gnome-shell gnome-shell-extensions gnome-keyring seahorse gnome-backgrounds \
   gnome-control-center gnome-font-viewer gnome-screenshot xdg-user-dirs-gtk \
   gnome-power-manager gnome-system-monitor gnome-terminal nautilus gvfs-mtp eog evince \
   file-roller gnome-tweaks networkmanager
+
+# Native browser connector for integration with extensions.gnome.org
+pacman -S --noconfirm chrome-gnome-shell
 
 # start gnome by default
 systemctl enable gdm
@@ -121,3 +124,7 @@ pacman -S --noconfirm unrar p7zip
 
 # useful shell utils
 pacman -S --noconfirm bash-completion vim bind-tools dos2unix rsync wget git openssh imagemagick tree
+
+# Use vim instead vi
+pacman -Rsnc vi
+ln -s /usr/bin/vim /usr/local/bin/vi
