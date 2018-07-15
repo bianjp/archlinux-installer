@@ -24,9 +24,14 @@ EOF
 
   # Install AUR helper from archlinuxcn repo
   sudo pacman -S --noconfirm yay
+  # Save yay options
+  yay --save --answerclean None --answerdiff None --answeredit None
 fi
 
 sudo pacman -Syy
+
+# Utils from archlinuxcn or AUR
+yay -S --noconfirm besttrace
 
 # Dotfiles
 find dotfiles -type f -exec cp {} ~/ \;
@@ -86,7 +91,7 @@ git clone https://github.com/bianjp/sublime-settings.git ~/.config/sublime-text-
 curl -sSL -o ~/.config/sublime-text-3/'Installed Packages'/'Package Control.sublime-package' 'https://packagecontrol.io/Package%20Control.sublime-package'
 
 # Office
-yay -S --noconfirm wps-office
+yay -S --noconfirm wps-office ttf-wps-fonts
 
 # Set favorite apps in Activities
 gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'firefox.desktop', 'sublime_text.desktop', 'google-chrome.desktop', 'gnome-system-monitor.desktop']"
@@ -115,7 +120,7 @@ sudo -i -u postgres createuser "$USER" --no-password --superuser
 # sudo systemctl enable php-fpm
 
 # Node.js
-sudo pacman -S --noconfirm nodejs npm
+sudo pacman -S --noconfirm nodejs npm yarn
 
 # Ruby
 sudo pacman -S --noconfirm ruby
@@ -126,6 +131,12 @@ bundle config mirror.https://rubygems.org https://gems.ruby-china.org
 # Redis
 sudo pacman -S --noconfirm redis
 sudo systemctl enable redis
+
+# Java
+sudo pacman -S --noconfirm jdk10-openjdk openjdk10-doc openjdk10-src jdk8-openjdk openjdk8-doc openjdk8-src
+sudo pacman -S --noconfirm gradle maven
+sudo pacman -S --noconfirm kotlin
+yay -S --noconfirm intellij-idea-ultimate-edition intellij-idea-ultimate-edition-jre
 
 # SSH config
 grep '^Host' /etc/ssh/ssh_config &> /dev/null || sudo tee -a /etc/ssh/ssh_config <<EOF
