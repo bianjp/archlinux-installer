@@ -10,6 +10,8 @@ if [[ ! "$confirm" =~ ^(y|Y) ]]; then
   exit
 fi
 
+pacman -S pacman-contrib
+
 update_mirrorlist(){
   curl -sSL 'https://www.archlinux.org/mirrorlist/?country=CN&protocol=http&protocol=https&ip_version=4&use_mirror_status=on' | sed 's/^#Server/Server/g' | rankmirrors - > /etc/pacman.d/mirrorlist
 }
@@ -27,6 +29,8 @@ pacman -Syy
 
 # Install the base packages
 pacstrap /mnt base base-devel
+pacstrap /mnt base linux linux-firmware
+
 
 # Generate fstab
 genfstab /mnt >> /mnt/etc/fstab
