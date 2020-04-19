@@ -10,17 +10,22 @@ fi
 
 # Add archlinuxcn repository
 if ! grep 'archlinuxcn' /etc/pacman.conf &> /dev/null; then
-  sudo tee -a /etc/pacman.conf <<EOF
 
-[archlinuxcn]
-SigLevel = Optional TrustedOnly
+  sudo tee /etc/pacman.d/archlinuxcn-mirrorlist <<EOF
 Server = https://mirrors.ustc.edu.cn/archlinuxcn/\$arch
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/\$arch
 Server = http://mirrors.cqu.edu.cn/archlinux-cn/\$arch
 Server = http://repo.archlinuxcn.org/\$arch
 EOF
+
+  sudo tee -a /etc/pacman.conf <<EOF
+
+[archlinuxcn]
+SigLevel = Optional TrustedOnly
+Include = /etc/pacman.d/archlinuxcn-mirrorlist
+EOF
   sudo pacman -Syy
-  sudo pacman -S --noconfirm archlinuxcn-keyring
+  sudo pacman -S --noconfirm archlinuxcn-keyring archlinuxcn-mirrorlist-git
 
   # Install AUR helper from archlinuxcn repo
   sudo pacman -S --noconfirm yay
@@ -43,7 +48,7 @@ yes | yay -S unzip-iconv
 sudo pacman -S --noconfirm ntfs-3g
 
 # Fonts
-sudo pacman -S --noconfirm ttf-dejavu wqy-microhei noto-fonts-emoji adobe-source-code-pro-fonts adobe-source-han-sans-cn-fonts
+sudo pacman -S --noconfirm ttf-dejavu wqy-microhei
 
 # Web browsers
 sudo pacman -S --noconfirm firefox
@@ -55,13 +60,11 @@ sudo pacman -S --noconfirm celluloid
 # Gnome theme
 yay -S --noconfirm numix-themes-darkblue numix-circle-icon-theme-git
 gsettings set org.gnome.desktop.interface gtk-theme 'Numix-DarkBlue'
-gsettings set org.gnome.desktop.interface icon-theme 'Numix-Circle-Light'
+gsettings set org.gnome.desktop.interface icon-theme 'Numix-Circle'
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
 # automatic date and time
 sudo systemctl enable systemd-timesyncd.service
-# automatic timezone
-gsettings set org.gnome.desktop.datetime automatic-timezone true
 gsettings set org.gnome.desktop.interface clock-format '24h'
 
 # Fcitx input method
@@ -131,7 +134,7 @@ sudo pacman -S --noconfirm redis
 sudo systemctl enable redis
 
 # Java
-sudo pacman -S --noconfirm jdk10-openjdk openjdk10-doc openjdk10-src jdk8-openjdk openjdk8-doc openjdk8-src
+sudo pacman -S --noconfirm jdk11-openjdk openjdk11-doc openjdk11-src jdk8-openjdk openjdk8-doc openjdk8-src
 sudo pacman -S --noconfirm gradle maven
 sudo pacman -S --noconfirm kotlin
 yay -S --noconfirm intellij-idea-ultimate-edition intellij-idea-ultimate-edition-jre

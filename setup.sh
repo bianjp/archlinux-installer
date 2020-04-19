@@ -14,8 +14,9 @@ ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock --systohc --utc
 
 # Locale
-sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
-sed -i 's/^#zh_CN/zh_CN/g' /etc/locale.gen
+sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+sed -i 's/^#zh_CN.GB18030/zh_CN.GB18030/' /etc/locale.gen
+sed -i 's/^#zh_CN.UTF-8/zh_CN.UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
@@ -25,7 +26,7 @@ echo $hostname > /etc/hostname
 # Install intel-ucode for Intel CPU
 is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
 if [[ -n "$is_intel_cpu" ]]; then
-  pacman -S --noconfirm intel-ucode
+  pacman -S --noconfirm intel-ucode --overwrite=/boot/intel-ucode.img
 fi
 
 # Bootloader
@@ -56,7 +57,7 @@ EOF
   sed -i 's#^ \+##g' /boot/loader/loader.conf
 
   # modify root partion in loader conf
-  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  root_partition=$(mount | grep 'on / ' | cut -d' ' -f1)
   root_partition=$(df / | tail -1 | cut -d' ' -f1)
   sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
 else
@@ -108,7 +109,7 @@ fi
 
 # gnome
 pacman -S --noconfirm gdm gnome-shell gnome-shell-extensions gnome-keyring seahorse gnome-backgrounds \
-  gnome-control-center gnome-font-viewer gnome-screenshot xdg-user-dirs-gtk \
+  gnome-control-center gnome-font-viewer xdg-user-dirs-gtk \
   gnome-power-manager gnome-system-monitor gnome-terminal nautilus gvfs-mtp eog evince \
   file-roller gnome-tweaks networkmanager
 
@@ -123,10 +124,9 @@ systemctl enable NetworkManager
 pacman -S --noconfirm unrar p7zip
 
 # useful shell utils
-pacman -S --noconfirm bash-completion vim bind-tools dos2unix rsync wget git openssh imagemagick tree
+pacman -S --noconfirm bash-completion vim bind-tools dos2unix rsync wget git tree
 pacman -S --noconfirm net-tools whois screen inotify-tools perl-rename recode
 pacman -S --noconfirm openbsd-netcat
 
 # Use vim instead vi
-pacman -Rsnc vi
 ln -s /usr/bin/vim /usr/local/bin/vi
